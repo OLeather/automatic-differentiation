@@ -20,11 +20,10 @@ The most basic form of automatic differentiation is forward accumulation, which 
   - v = x.v*y.v
   - d(var) = x.v * y.d(var) + y.v * x.d(var)
 
-x = var(5)
-y = var(2)
+# Application
+x = Var(5)
+y = Var(2)
 
-w = 2*x + x
-w' = 2 + 1
 w = plus(mul(y, x), x)
 w.v = plus(mul(y, x), x).v # initial definition
     = mul(y, x).v + x.v # recursively expand
