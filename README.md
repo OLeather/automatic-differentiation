@@ -7,6 +7,10 @@ The most basic form of automatic differentiation is forward accumulation, which 
 
 ### Examples
 ```
+- Operator: Var
+  - inputs: v
+  - v = v
+  - d(var) = 1 if (self is var) else 0
 - Operator: plus
   - inputs: x, y
   - v = x.v + y.v
@@ -15,4 +19,22 @@ The most basic form of automatic differentiation is forward accumulation, which 
   - inputs: x, y
   - v = x.v*y.v
   - d(var) = x.v * y.d(var) + y.v * x.d(var)
+
+x = var(5)
+y = var(2)
+
+w = 2*x + x
+w' = 2 + 1
+w = plus(mul(y, x), x)
+w.v = plus(mul(y, x), x).v # initial definition
+    = mul(y, x).v + x.v # recursively expand
+    = (y.v * x.v) + x.v # recursively expand
+    = (2 * 5) + 2 
+    = 12 
+
+w.d(x) = plus(mul(y, x), x).d # initial definition
+       = mul(y, x).d(x) + x.d(x) # recursive expand
+       = (y.v * x.d(x) + x.v * y.d(x)) + x.d(x) # recursive expand
+       = (2 * 1 + 5 * 0) + 1 
+       = 7
 ```
